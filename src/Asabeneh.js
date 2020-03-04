@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, createRef } from "react";
 import "./App.css";
 
 class App extends Component {
@@ -9,15 +9,12 @@ class App extends Component {
     gender: "",
     file: "",
     bio: "",
-    // skills: ""
     skills: {
       html: false,
       css: false,
       javascript: false
     }
   };
-
-  // Handel change is for changing the current state
 
   handleChange = e => {
     const { name, value, type, checked } = e.target;
@@ -30,22 +27,35 @@ class App extends Component {
     }
   };
 
-  // handleChange = e => {
-  //   const { name, value, type, checked } = e.target;
-  //   if (type === "checkBox") {
-  //     this.setState({ skills: { ...this.state.skills, [name]: value } });
-  //   } else {
-  //     this.setState({ [name]: value });
-  //   }
-  //   console.log(name, value);
-  //   this.setState({ [name]: value });
-  // };
-
   handleSubmit = e => {
     e.preventDefault();
-    const { firstName, lastName, country, gender } = this.state;
+    const {
+      firstName,
+      lastName,
+      country,
+      gender,
+      bio,
+      file,
+      skills
+    } = this.state;
 
-    console.log(this.state);
+    const formattedSkills = [];
+    for (const key in skills) {
+      console.log(key);
+      if (skills[key]) {
+        formattedSkills.push(key.toUpperCase());
+      }
+    }
+    const data = {
+      firstName,
+      lastName,
+      country,
+      gender,
+      bio,
+      file,
+      skills: formattedSkills
+    };
+    console.log(data);
   };
   render() {
     return (
@@ -53,41 +63,36 @@ class App extends Component {
         <h1>React Form</h1>
         <form onSubmit={this.handleSubmit}>
           <div>
-            <label>First Name: </label>
             <input
-              type="Text"
+              type="text"
               name="firstName"
-              onChange={this.handleChange}
               value={this.state.firstName}
+              onChange={this.handleChange}
               placeholder="First Name"
             />
           </div>
-          <br />
           <div>
-            <label>Last Name: </label>
             <input
-              type="Text"
+              type="text"
               name="lastName"
-              onChange={this.handleChange}
               value={this.state.lastName}
+              onChange={this.handleChange}
               placeholder="Last Name"
             />
           </div>
-          <br />
           <div>
-            <label>Country: </label>
             <select
               name="country"
               value={this.state.country}
               onChange={this.handleChange}
             >
-              <option>--Select Countries--</option>
-              <option>Finland</option>
-              <option>Sweden</option>
-              <option>Norway</option>
+              <option value="">-- select country --</option>
+              <option value="Finland">Finland</option>
+              <option value="Sweden">Sweden</option>
+              <option value="Norway">Norway</option>
+              <option value="Denmark">Denmark</option>
             </select>
           </div>
-          <br />
           <div>
             <label>Male</label>
             <input
@@ -116,7 +121,6 @@ class App extends Component {
               checked={this.state.gender === "Other"}
             />
           </div>
-          <br />
           <div>
             <p>Select your skills</p>
             <input type="checkbox" name="html" onChange={this.handleChange} />
@@ -130,8 +134,18 @@ class App extends Component {
             />
             <label>JavaScript</label> <br />
           </div>
+          <div>
+            <p>You bio: </p>
+            <textarea
+              name="bio"
+              value={this.state.bio}
+              onChange={this.handleChange}
+            ></textarea>
+          </div>
+          <div>
+            <input type="file" name="file" onChange={this.handleChange} />
+          </div>
 
-          <br />
           <button>Submit</button>
         </form>
       </div>
